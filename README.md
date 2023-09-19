@@ -4,7 +4,7 @@ Full, up-to-date database of [GitHub emoji](https://github.com/github/gemoji) wh
 
 Useful when rendering [GitLab](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/user/markdown.md#emoji)/[GitHub-flavored  Markdown](https://github.github.com/gfm/), although this crate does not parse any Markdown itself.
 
-Used by [crates.rs](https://crates.rs/crates/gh-emoji).
+Used by [lib.rs website](https://lib.rs/crates/gh-emoji).
 
 ## Example usage
 
