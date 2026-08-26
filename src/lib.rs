@@ -1,10 +1,6 @@
-
 use crate::data_generated::EMOJI;
+use regex::{Captures, Regex};
 use std::borrow::Cow;
-use regex::{
-    Regex,
-    Captures,
-};
 
 mod data_generated;
 
@@ -13,15 +9,16 @@ mod data_generated;
 /// The name should be without `:`, e.g. `smile`.
 ///
 /// Case sensitive. Returns `None` if the name is not recognized.
+#[must_use]
 pub fn get(name: &str) -> Option<&str> {
-    EMOJI.get(name).map(|s| *s)
+    EMOJI.get(name).copied()
 }
 
 /// List all known emoji
 ///
 /// Returns iterator of `(name, unicode)`
-pub fn all() -> impl Iterator<Item=(&'static str, &'static str)> {
-    EMOJI.entries.iter().map(|&x| x)
+pub fn all() -> impl Iterator<Item = (&'static str, &'static str)> {
+    EMOJI.entries.iter().copied()
 }
 
 /// Replaces `:emoji:` in strings
@@ -31,11 +28,12 @@ pub fn all() -> impl Iterator<Item=(&'static str, &'static str)> {
 /// let unicode_text = r.replace_all("Hello :cat:!");
 /// ```
 pub struct Replacer {
-    regex: Regex
+    regex: Regex,
 }
 
 impl Replacer {
     /// There is some small setup cost
+    #[must_use]
     pub fn new() -> Self {
         Self {
             regex: Regex::new(r":([a-z1238+-][a-z0-9_-]*):").unwrap(),
@@ -47,6 +45,7 @@ impl Replacer {
     /// It may return `Cow::Borrowed` if there were no emoji-like
     /// patterns in the string. Call `.to_string()` if you need
     /// `String` or `.as_ref()` to get `&str`.
+    #[must_use]
     pub fn replace_all<'a>(&self, text: &'a str) -> Cow<'a, str> {
         self.regex.replace_all(text, EmojiRegexReplacer)
     }
